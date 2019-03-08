@@ -1,7 +1,9 @@
 # emonTH & Telaire
 
 This project is a modification to include the Telaire T9602 sensors of Humidity and temperature in emonTH
+
 The starting point is the version of project V3.2.4 of [emonth2] (https://travis-ci.org/openenergymonitor/emonth2)
+
 The solution consists of:
 - A sensor Si7021 of internal temperature and humidity
 - 2 external sensors 18B20
