@@ -112,7 +112,7 @@ void setup() {
 //################################################################################################################################
 
   pinMode(LED,OUTPUT); digitalWrite(LED,HIGH);                       // Status LED on
-
+  digitalWrite(DS18B20_PWR, HIGH); delay(50);
   // Unused pins configure as input pull up for low power
   // http://electronics.stackexchange.com/questions/43460/how-should-unused-i-o-pins-be-configured-on-atmega328p-for-lowest-power-consumpt
   // port map: https://github.com/openenergymonitor/emonth2/blob/master/hardware/readme.md
@@ -245,7 +245,7 @@ void setup() {
   byte j=0;                                        // search for one wire devices and
                                                    // copy to device address arrays.
   while ((j < numSensors) && (oneWire.search(allAddress[j])))  j++;
-  digitalWrite(DS18B20_PWR, LOW);
+  // digitalWrite(DS18B20_PWR, LOW);
 
   if (numSensors==0)
   {
@@ -333,15 +333,19 @@ void loop()
 
   if (WDT_number>=WDT_MAX_NUMBER || pulseCount>=PULSE_MAX_NUMBER)
   {
+
+
+
     cli();
     emonth.pulsecount += (unsigned int) pulseCount;
     pulseCount = 0;
     sei();
 
+    digitalWrite(DS18B20_PWR, HIGH); dodelay(50);
 
     if (DS18B20==1)
     {
-      digitalWrite(DS18B20_PWR, HIGH); dodelay(50);
+      // digitalWrite(DS18B20_PWR, HIGH); dodelay(50);
       for(int j=0;j<numSensors;j++) sensors.setResolution(allAddress[j], TEMPERATURE_PRECISION);      // and set the a to d conversion resolution of each.
       sensors.requestTemperatures();                                        // Send the command to get temperatures
       dodelay(ASYNC_DELAY); //Must wait for conversion, since we use ASYNC mode
@@ -349,7 +353,7 @@ void loop()
 
       float temp_1=(sensors.getTempC(allAddress[0]));
       float temp_2=(sensors.getTempC(allAddress[1]));
-      digitalWrite(DS18B20_PWR, LOW);
+      // digitalWrite(DS18B20_PWR, LOW);
 
 
       if ((temp_1<125.0) && (temp_1>-40.0))
@@ -398,6 +402,7 @@ void loop()
       power_twi_disable();
     }
 
+    digitalWrite(DS18B20_PWR, LOW);
 
     // Send data via RF
     if (RF_STATUS){
@@ -455,6 +460,9 @@ void loop()
     unsigned long last = now;
     now = millis();
     WDT_number=0;
+
+
+
   } // end WDT
 
 } // end loop
