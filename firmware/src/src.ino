@@ -365,11 +365,12 @@ void loop()
       {
         emonth.temp_external_2 = (temp_2*10);
       }
-
-      Serial.println("temparaturas 18b20: ");
-      Serial.println(emonth.temp_external);
-      Serial.println(emonth.temp_external_2);
-
+      if(debug)
+      {
+        Serial.println("temparaturas 18b20: ");
+        Serial.println(emonth.temp_external);
+        Serial.println(emonth.temp_external_2);
+      }
     }
 
     emonth.battery=int(analogRead(BATT_ADC)*0.0322);                    //read battery voltage, convert ADC to volts x10
